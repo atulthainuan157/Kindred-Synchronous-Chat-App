@@ -49,13 +49,15 @@ export const signup = async (request, response, next) => {
         return response.status(500).send("Internal Server Error");
     }
 }
+
+
 export const login = async(request, response, next) => {
     try {
         const {email, password} = request.body;
         if(!email || !password) {
             return response.status(400).send("Email and Password both are required...");
         }
-        const user = User.findOne({email});
+        const user = await User.findOne({email});
         if(!user) {
             return response.status(404).send("User with the given email was not found...");
         }
