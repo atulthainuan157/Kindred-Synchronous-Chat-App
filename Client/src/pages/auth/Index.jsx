@@ -1,7 +1,7 @@
-import { Tabs, TabsList, TabsTrigger, TabsContent } from '../../components/ui/tabs';
-import { Button } from '../../components/ui/button.jsx';
-import { toast } from '../../components/ui/toast.jsx';
-import { Input } from '../../components/ui/input';
+import { Tabs, TabsList, TabsTrigger, TabsContent } from '@/components/ui/tabs';
+import { Button } from '@/components/ui/button.jsx';
+import { toast } from '@/components/ui/toast.jsx';
+import { Input } from '@/components/ui/input';
 import Background from '../../assets/login2.png';
 import Victory from '../../assets/victory.svg';
 import { apiClient } from "../../lib/api-client.js"

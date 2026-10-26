@@ -1,7 +1,7 @@
 import './App.css'
 import { Button } from './components/ui/button'
 import { BrowserRouter, Navigate, Route, Routes } from "react-router-dom"
-import Auth from './pages/auth'
+import Auth from './pages/auth/Index'
 import Chat from './pages/chat/Index'
 import Profile from './pages/profile/Index'
 import { useAppStore } from './store'
@@ -24,9 +24,8 @@ const AuthRoute = ({ children }) => {
 
 const App = () => {
 
-
   const { userInfo, setUserInfo } = useAppStore();
-  const [loading, setLoading] = useState(false)
+  const [loading, setLoading] = useState(() => !userInfo)
 
   useEffect(() => {
     const getUserData = async () => {
@@ -50,10 +49,7 @@ const App = () => {
     if(!userInfo) {
       getUserData();
     }
-    else {
-      setLoading(false);
-    }
-  }, [userInfo, setUserInfo])
+  }, [setUserInfo, userInfo])
 
   if(loading) {
     return <div>Loading...</div>
