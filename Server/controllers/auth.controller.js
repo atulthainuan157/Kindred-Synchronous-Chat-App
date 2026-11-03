@@ -21,8 +21,8 @@ const createToken = (email, userId) => {
 
 export const signup = async (request, response, next) => {
     try {
-        const {email, password} = request.body;
-        if(!email || !password) {
+        const { email, password } = request.body;
+        if (!email || !password) {
             return response.status(400).send("Email and Password both are required");
         };
         const user = await User.create({
@@ -51,18 +51,18 @@ export const signup = async (request, response, next) => {
 }
 
 
-export const login = async(request, response, next) => {
+export const login = async (request, response, next) => {
     try {
-        const {email, password} = request.body;
-        if(!email || !password) {
+        const { email, password } = request.body;
+        if (!email || !password) {
             return response.status(400).send("Email and Password both are required...");
         }
-        const user = await User.findOne({email});
-        if(!user) {
+        const user = await User.findOne({ email });
+        if (!user) {
             return response.status(404).send("User with the given email was not found...");
         }
         const auth = await compare(password, user.password);
-        if(!auth) {
+        if (!auth) {
             return response.status(400).send("Password is incorrect...");
         }
         response.cookie("jwt", createToken(email, user.id), {
@@ -85,16 +85,16 @@ export const login = async(request, response, next) => {
         );
     }
     catch (error) {
-        console.log({error});
+        console.log({ error });
         return response.status(500).send("Internal Server Error...");
     }
 }
 
-export const getUserInfo = async(request, response, next) => {
+export const getUserInfo = async (request, response, next) => {
     try {
         console.log(request.userId);
         const userData = await User.findById(request.userId);
-        if(!userData) {
+        if (!userData) {
             return response.status(404).send("User with given id not found");
         }
         return response.status(200).json({
@@ -107,22 +107,22 @@ export const getUserInfo = async(request, response, next) => {
             color: userData.color
         });
     }
-    catch(error) {
+    catch (error) {
         console.log({ error });
         return response.status(500).send("Internal Server Error");
     }
 }
 
-export const updateProfile = async(request, response, next) => {
+export const updateProfile = async (request, response, next) => {
     try {
         const userId = request;
         const { firstName, lastName, color } = request.body;
-        if(!firstName || !lastName || !color) {
+        if (!firstName || !lastName) {
             return response.status(400).send('First Name, Last Name and Color all are required...');
         }
         const userData = await User.findById(userId, {
-            firstName, lastName, color, profileSetup:true
-        }, {new: true, runValidators: true});
+            firstName, lastName, color, profileSetup: true
+        }, { new: true, runValidators: true });
         return response.status(200).json({
             id: userData.id,
             email: userData.email,
@@ -134,7 +134,7 @@ export const updateProfile = async(request, response, next) => {
         });
     }
     catch (error) {
-        console.log({error});
+        console.log({ error });
         return response.status(500).send('Internal Server Error');
     }
 }

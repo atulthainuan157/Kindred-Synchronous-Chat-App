@@ -9,14 +9,14 @@ const Chat = () => {
   const navigate = useNavigate();
 
   useEffect(() => {
-    if(!userInfo.profileSetup) {
+    if (!userInfo.profileSetup) {
       toast.add({
         title: "Profile not completed",
         description: "Please setup and complete your profile"
       })
       navigate('/profile');
     }
-  },[userInfo, navigate])
+  }, [userInfo, navigate])
 
   return (
     <div>Chat</div>

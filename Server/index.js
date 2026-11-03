@@ -14,8 +14,8 @@ const app = express()
 
 app.use(
     cors({
-        origin:[process.env.ORIGIN],
-        methods:["GET", "POST", "PUT", "PATCH", "DELETE"],
+        origin: [process.env.ORIGIN],
+        methods: ["GET", "POST", "PUT", "PATCH", "DELETE"],
         credentials: true
     })
 )
@@ -34,7 +34,7 @@ const server = app.listen(port, () => {
     console.log(`Server is running at port ${port}`)
 })
 
-mongoose.connect(databaseUrl, {family:4}).then(
+mongoose.connect(databaseUrl, { family: 4 }).then(
     () => console.log("Database is successfully connected to mongoDB")).catch(
-        (error) => {console.log(error.message)}
+        (error) => { console.log(error.message) }
     )

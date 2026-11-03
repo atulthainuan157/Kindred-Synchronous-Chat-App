@@ -21,21 +21,21 @@ const Auth = () => {
     const [confirmPassword, setConfirmPassword] = useState('');
 
     const validateSignup = () => {
-        if(!email.length) {
+        if (!email.length) {
             toast.add({
                 title: "❌ Error",
                 description: "Email is required!",
             });
             return false;
         }
-        if(!password.length) {
+        if (!password.length) {
             toast.add({
                 title: "❌ Error",
                 description: "Password is required..."
             });
             return false;
         }
-        if(password !== confirmPassword) {
+        if (password !== confirmPassword) {
             toast.add({
                 title: "❌ Error",
                 description: "Password and Confirm password should be same..."
@@ -46,14 +46,14 @@ const Auth = () => {
     }
 
     const validateLogin = () => {
-        if(!email.length) {
+        if (!email.length) {
             toast.add({
                 title: "❌ Error",
                 description: "Email is required..."
             })
             return false;
         }
-        if(!password) {
+        if (!password) {
             toast.add({
                 title: "❌ Error",
                 description: "Password is required..."
@@ -64,25 +64,25 @@ const Auth = () => {
     }
 
     const handleLogin = async () => {
-        if(validateLogin()) {
+        if (validateLogin()) {
             try {
                 const response = await apiClient.post(
                     LOGIN_ROUTES,
                     { email, password },
                     { withCredentials: true }
                 )
-                if(response.data.user.id) {
+                if (response?.data?.user?.id) {
                     setUserInfo(response.data.user);
-                    if(response.data.user.profileSetup) {
+                    if (response.data.user.profileSetup) {
                         navigate("/chat");
                     }
                     else {
                         navigate("/profile")
                     }
                 }
-                console.log({response});
+                console.log({ response });
             }
-            catch(error) {
+            catch (error) {
                 toast.add({
                     title: "❌ Error",
                     description: "Either e-mail or password is incorrect..."
@@ -93,18 +93,18 @@ const Auth = () => {
     };
 
     const handleSignup = async () => {
-        if(validateSignup()) {
+        if (validateSignup()) {
             try {
-            const response = await apiClient.post(
-                SIGNUP_ROUTES,
-                {email, password},
-                {withCredentials: true}
-            )
-            if(response.status===201) {
-                setUserInfo(response.data.user);
-                navigate("/profile");
-            }
-            console.log({response})
+                const response = await apiClient.post(
+                    SIGNUP_ROUTES,
+                    { email, password },
+                    { withCredentials: true }
+                )
+                if (response.status === 201) {
+                    setUserInfo(response.data.user);
+                    navigate("/profile");
+                }
+                console.log({ response })
             }
             catch (error) {
                 console.log(error.message);
@@ -129,14 +129,14 @@ const Auth = () => {
                     <div className='flex items-center justify-center w-full'>
                         <Tabs defaultValue='login' className='w-3/4 flex flex-col'>
                             <TabsList variant='line' className='bg-transparent rounded-none w-full flex border-b border-gray-700 p-0'>
-                                <TabsTrigger 
-                                    value='login' 
+                                <TabsTrigger
+                                    value='login'
                                     className='w-full rounded-none border-b-2 border-transparent bg-transparent py-3 text-black transition-all data-[state=active]:border-b-blue-500 data-[state=active]:bg-transparent data-[state=active]:font-semibold shadow-none'
                                 >
                                     LogIn
                                 </TabsTrigger>
-                                <TabsTrigger 
-                                    value='signup' 
+                                <TabsTrigger
+                                    value='signup'
                                     className='w-full rounded-none border-b-2 border-transparent bg-transparent py-3 text-black transition-all data-[state=active]:border-b-blue-500 data-[state=active]:bg-transparent data-[state=active]:font-semibold shadow-none'
                                 >
                                     SignUp
@@ -145,21 +145,21 @@ const Auth = () => {
 
                             {/* LogIn Tab Content */}
                             <TabsContent value='login' className='flex flex-col gap-4 mt-6 w-full'>
-                                <Input 
+                                <Input
                                     placeholder='Email'
                                     type='email'
                                     value={email}
                                     className='rounded-full px-5 py-6 w-full'
-                                    onChange={(e) => setEmail(e.target.value)} 
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
-                                <Input 
+                                <Input
                                     placeholder='Password'
                                     type='password'
                                     value={password}
                                     className='rounded-full px-5 py-6 w-full'
-                                    onChange={(e) => setPassword(e.target.value)} 
+                                    onChange={(e) => setPassword(e.target.value)}
                                 />
-                                <Button 
+                                <Button
                                     onClick={handleLogin}
                                     className='w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 rounded-full transition-colors mt-2'
                                 >
@@ -169,28 +169,28 @@ const Auth = () => {
 
                             {/* SignUp Tab Content */}
                             <TabsContent value='signup' className='flex flex-col gap-4 mt-6 w-full'>
-                                <Input 
+                                <Input
                                     placeholder='Email'
                                     type='email'
                                     value={email}
                                     className='rounded-full px-5 py-6 w-full'
-                                    onChange={(e) => setEmail(e.target.value)} 
+                                    onChange={(e) => setEmail(e.target.value)}
                                 />
-                                <Input 
+                                <Input
                                     placeholder='Password'
                                     type='password'
                                     value={password}
                                     className='rounded-full px-5 py-6 w-full'
-                                    onChange={(e) => setPassword(e.target.value)} 
+                                    onChange={(e) => setPassword(e.target.value)}
                                 />
-                                <Input 
+                                <Input
                                     placeholder='Confirm Password'
                                     type='password'
                                     value={confirmPassword}
                                     className='rounded-full px-5 py-6 w-full'
-                                    onChange={(e) => setConfirmPassword(e.target.value)} 
+                                    onChange={(e) => setConfirmPassword(e.target.value)}
                                 />
-                                <Button 
+                                <Button
                                     onClick={handleSignup}
                                     className='w-full bg-purple-600 hover:bg-purple-700 text-white font-medium py-3 rounded-full transition-colors mt-2'
                                 >

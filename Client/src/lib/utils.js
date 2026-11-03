@@ -9,7 +9,7 @@ export const colors = [
 ]
 
 export const getColor = (color) => {
-    if(color>=0&&color<colors.length) {
+    if (color >= 0 && color < colors.length) {
         return colors[color];
     }
     return colors[0];
