@@ -1,4 +1,5 @@
 export { cn } from "cn"
+import animationData from '@/assets/lottie-json.json'
 
 
 export const colors = [
@@ -13,4 +14,11 @@ export const getColor = (color) => {
         return colors[color];
     }
     return colors[0];
+}
+
+
+export const animationDefaultOptions = {
+    loop: true,
+    autoplay: true,
+    animationData,
 }

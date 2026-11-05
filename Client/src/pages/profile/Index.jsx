@@ -1,4 +1,4 @@
-import React, { useEffect, useRef } from 'react'
+import { useEffect, useRef } from 'react'
 import { useAppStore } from '@/store';
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -10,7 +10,7 @@ import { colors, getColor } from '@/lib/utils';
 import { Button } from '@/components/ui/button';
 import { toast } from '@/components/ui/toast';
 import { apiClient } from '@/lib/api-client';
-import { UPDATE_PROFILE_ROUTE } from '@/utils/constants';
+import { ADD_PROFILE_IMAGE_ROUTE, UPDATE_PROFILE_ROUTE, HOST, REMOVE_PROFILE_IMAGE_ROUTE } from '@/utils/constants';
 
 const Profile = () => {
 
@@ -28,6 +28,9 @@ const Profile = () => {
       setFirstName(userInfo.firstName);
       setLastName(userInfo.lastName);
       setSelectedColor(userInfo.color);
+    }
+    if(userInfo.image) {
+      setImage(`${HOST}/${userInfo.image}`);
     }
   }, [userInfo])
 
@@ -73,8 +76,10 @@ const Profile = () => {
       navigate('/chat');
     }
     else {
-      toast.error('Please setup profile');
-      <div>Hello</div>
+      toast.add({
+        title: '❌ Error',
+        description: 'Complete your profile'
+      });
     }
   }
 
@@ -82,9 +87,40 @@ const Profile = () => {
     fileInputRef.current.click();
   };
 
-  const handleImageChange = async (event) => {};
+  const handleImageChange = async (event) => {
+    const file = event.target.files[0];
+    console.log({file});
+    if(file) {
+      const formData = new FormData();
+      formData.append('profile-image', file);
+      const response = await apiClient.post(ADD_PROFILE_IMAGE_ROUTE, formData, { withCredentials: true });
+      if(response.status===200 && response.data.image) {
+        setUserInfo({...userInfo, image: response.data.image });
+      }
+      const reader = new FileReader();
+      reader.onload = () => {
+        setImage(reader.result);
+      }
+      reader.readAsDataURL(file);
+    }
+  };
 
-  const handleDeleteImage = async () => {};
+  const handleDeleteImage = async () => {
+    try {
+      const response = await apiClient.delete(REMOVE_PROFILE_IMAGE_ROUTE, {withCredentials: true});
+      if(response.status===200) {
+        setUserInfo({...userInfo, image: null});
+        toast.add({
+          title: '⛓️‍💥 Success',
+          description: 'Image removed successfully...'
+        });
+        setImage(null);
+      }
+    }
+    catch(error) {
+      console.log(error);
+    }
+  };
 
 
   return (
@@ -117,12 +153,12 @@ const Profile = () => {
                 </div>
               )
             }
-            <input type='text'
+            <input type='file'
               ref={ fileInputRef }
               className='hidden'
               onChange={handleImageChange}
               name='profile-image'
-              accept='.png .jpg .jpeg .svg .webp'
+              accept='.png, .jpg, .jpeg, .svg, .webp'
             />
           </div>
           <div className='flex min-w-32 md:min-w-64 flex-col gap-5 text-white items-center justify-center '>
@@ -137,7 +173,7 @@ const Profile = () => {
             <div className='w-full'>
               <Input placeholder='First Name'
                 type='text'
-                value={userInfo.firstName}
+              value={firstName}
                 onChange={((e) => setFirstName(e.target.value))}
                 className='rounded-lg p-6 bg-[#2c2e3b] border-none'
               />
@@ -145,7 +181,7 @@ const Profile = () => {
             <div className='w-full'>
               <Input placeholder='Last Name'
                 type='text'
-                value={userInfo.lastName}
+              value={lastName}
                 onChange={((e) => setLastName(e.target.value))}
                 className='rounded-lg p-6 bg-[#2c2e3b] border-none'
               />
