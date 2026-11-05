@@ -29,7 +29,7 @@ const Profile = () => {
       setLastName(userInfo.lastName);
       setSelectedColor(userInfo.color);
     }
-    if(userInfo.image) {
+    if (userInfo.image) {
       setImage(`${HOST}/${userInfo.image}`);
     }
   }, [userInfo])
@@ -72,7 +72,7 @@ const Profile = () => {
   }
 
   const handleNavigate = () => {
-    if(userInfo.profileSetup) {
+    if (userInfo.profileSetup) {
       navigate('/chat');
     }
     else {
@@ -89,13 +89,13 @@ const Profile = () => {
 
   const handleImageChange = async (event) => {
     const file = event.target.files[0];
-    console.log({file});
-    if(file) {
+    console.log({ file });
+    if (file) {
       const formData = new FormData();
       formData.append('profile-image', file);
       const response = await apiClient.post(ADD_PROFILE_IMAGE_ROUTE, formData, { withCredentials: true });
-      if(response.status===200 && response.data.image) {
-        setUserInfo({...userInfo, image: response.data.image });
+      if (response.status === 200 && response.data.image) {
+        setUserInfo({ ...userInfo, image: response.data.image });
       }
       const reader = new FileReader();
       reader.onload = () => {
@@ -107,9 +107,9 @@ const Profile = () => {
 
   const handleDeleteImage = async () => {
     try {
-      const response = await apiClient.delete(REMOVE_PROFILE_IMAGE_ROUTE, {withCredentials: true});
-      if(response.status===200) {
-        setUserInfo({...userInfo, image: null});
+      const response = await apiClient.delete(REMOVE_PROFILE_IMAGE_ROUTE, { withCredentials: true });
+      if (response.status === 200) {
+        setUserInfo({ ...userInfo, image: null });
         toast.add({
           title: '⛓️‍💥 Success',
           description: 'Image removed successfully...'
@@ -117,7 +117,7 @@ const Profile = () => {
         setImage(null);
       }
     }
-    catch(error) {
+    catch (error) {
       console.log(error);
     }
   };
@@ -145,8 +145,8 @@ const Profile = () => {
             {
               hovered && (
                 <div className='absolute inset-0 flex items-center justify-center bg-black/50 ring-fuchsia-50 rounded-full'
-                  onClick={image? handleDeleteImage : handleFileInputClick}
-                 >
+                  onClick={image ? handleDeleteImage : handleFileInputClick}
+                >
                   {
                     image ? <FaTrash className='text-white text-3xl cursor-pointer' /> : <FaPlus className='text-white text-3xl cursor-pointer' />
                   }
@@ -154,7 +154,7 @@ const Profile = () => {
               )
             }
             <input type='file'
-              ref={ fileInputRef }
+              ref={fileInputRef}
               className='hidden'
               onChange={handleImageChange}
               name='profile-image'
@@ -173,7 +173,7 @@ const Profile = () => {
             <div className='w-full'>
               <Input placeholder='First Name'
                 type='text'
-              value={firstName}
+                value={firstName}
                 onChange={((e) => setFirstName(e.target.value))}
                 className='rounded-lg p-6 bg-[#2c2e3b] border-none'
               />
@@ -181,7 +181,7 @@ const Profile = () => {
             <div className='w-full'>
               <Input placeholder='Last Name'
                 type='text'
-              value={lastName}
+                value={lastName}
                 onChange={((e) => setLastName(e.target.value))}
                 className='rounded-lg p-6 bg-[#2c2e3b] border-none'
               />
